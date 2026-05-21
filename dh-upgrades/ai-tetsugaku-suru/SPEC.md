@@ -268,7 +268,7 @@ Ignis 解題 (Phase 2) は かげろう の通常作業セッション中の DH 
 |---|---|---|
 | local | `http://localhost:4321` | 開発 |
 | preview | Cloudflare Pages preview URL | PR ごとに自動生成 |
-| production | (かげろう 確定後) | `main` ブランチ push で自動デプロイ |
+| production | (かげろう 確定後) | `master` ブランチ push で自動デプロイ |
 
 ### 5.2 GitHub Actions
 

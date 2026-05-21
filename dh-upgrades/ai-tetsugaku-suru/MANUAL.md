@@ -149,7 +149,7 @@ build + test + deploy が green になり、Cloudflare Pages にアーティフ�
 
    ```bash
    grep -r '<本名候補>' site/src/content/  # 0 件であること
-   grep -E '@[\w.-]+\.\w+' site/src/content/dialogues/  # email 残ってないか
+   grep -E '@[[:alnum:]_.-]+\.[[:alnum:]]+' site/src/content/dialogues/  # email 残ってないか (POSIX 文字クラス)
    ```
 
 9. build pass 確認:

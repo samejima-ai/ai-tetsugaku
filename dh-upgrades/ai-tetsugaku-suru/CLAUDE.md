@@ -57,7 +57,7 @@ DONT §3.5 通り、かげろう (Master) の本名を commit author / PR 本文
 - [ ] dark / light 両モードで visual regression なし
 - [ ] diagonal asymmetric corner (DESIGN §5) が新規 component に適用されている
 
-### 2.3 main merge 後
+### 2.3 master merge 後
 
 - [ ] production URL でデプロイ反映を確認
 - [ ] 公開済み dialogues 記事のマスクが意図通り
