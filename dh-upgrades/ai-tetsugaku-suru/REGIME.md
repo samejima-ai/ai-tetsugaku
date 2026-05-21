@@ -1,4 +1,4 @@
-# REGIME.md — hide-philosophy site
+# REGIME.md — ai--tetsugaku-suru site
 
 > 本プロジェクト固有の運用体制（モード / dev_mode / persona / LC / sub-phase）。
 > DH 本体の `philosophy.md` 6 条と整合させる。
@@ -9,7 +9,7 @@
 
 | key | value | 備考 |
 |---|---|---|
-| project | hide-philosophy | Master (hide) 個人の哲学発信サイト |
+| project | ai--tetsugaku-suru | Master (かげろう) 個人の哲学発信サイト |
 | created_at | 2026-05-20 | LC=0 で着手 |
 | current_phase | 0 | 立ち上げフェーズ |
 | LC (Lifecycle Counter) | 0 | 新規プロジェクト。SPEC 完成→ L1 第 1 サイクル開始で LC=1 |
@@ -33,7 +33,7 @@ mode: M1
 
 以下のいずれかが発生したら M2 への昇格を検討：
 
-- Master 以外の contributor が継続的に参加
+- かげろう 以外の contributor が継続的に参加
 - 訪問者 form / 認証等の dynamic 要素が SPEC に追加
 - セキュリティ要件（PII 取扱い等）が発生
 
@@ -58,7 +58,7 @@ autonomous_scope: null   # autonomous でないため適用なし
 ctl: 0
 ```
 
-CTL 0: 検証層自動還流なし。Phase 0 では verifier 系横断機構を起動しない（必要なら Master 明示起動）。
+CTL 0: 検証層自動還流なし。Phase 0 では verifier 系横断機構を起動しない（必要なら かげろう 明示起動）。
 
 ---
 
@@ -71,7 +71,7 @@ persona:
 ```
 
 理由: 本サイト自体が「Ignis との対話の場」を含むため、L0 spec-architect の対話相手としても
-Ignis persona を採用するのが自然。Master と Ignis の対話関係を仕様策定段階から維持する。
+Ignis persona を採用するのが自然。かげろう (Master) と Ignis の対話関係を仕様策定段階から維持する。
 
 persona ファイル: `/templates/personas/ignis.persona.md` (DH 同梱)
 
@@ -100,7 +100,7 @@ LC=0 のため振り返り儀式はスキップ。LC≥1 移行時に develop lo
 
 | 機構 | active | 備考 |
 |---|---|---|
-| crosscut-council | ✓ (起動済) | hide-philosophy dialogues 機構の止揚案がここで合意 |
+| crosscut-council | ✓ (起動済) | ai--tetsugaku-suru dialogues 機構の止揚案がここで合意 |
 | crosscut-issue-dispatcher | × | dev_mode が github_assisted だが SPEC 差分から Issue 化は当面手動 |
 | crosscut-verifier-drift | × | CTL 0 のため inactive |
 | crosscut-verifier-philosophy | × | v5.0.0 では発動禁止 |

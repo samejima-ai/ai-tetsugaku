@@ -1,4 +1,4 @@
-# DONT.md — hide-philosophy site
+# DONT.md — ai--tetsugaku-suru site
 
 > 本サイトで **やらないこと** を明示する。スコープ膨張を防ぐ防波堤。
 > 例外を入れたい場合は SPEC.md を改訂して移送する（DONT に書いたまま例外運用しない）。
@@ -46,21 +46,23 @@ Phase 2 以降で必要に応じて Cloudflare Analytics (cookie-less) のみ検
 `masked: true` frontmatter が無い記事は build を失敗させる。
 公開後に発覚した場合は即座に該当記事を non-published に戻し、マスク後再公開。
 
+かげろう (Master) の本名が dialogues 本文に混入した場合も同様 — `<name>` または「かげろう」への置換 (SPEC §3.4.3 マスク機構) で再公開する。
+
 ### 2.2 Master の承認なしでの dialogues 自動公開を禁ずる
 
 SessionEnd hook が transcript を `.dh/dialogues/staging/` に書き出すまでは自動でよいが、
-**`site/src/content/dialogues/` への移動 = 公開判断は Master が行う**。
+**`site/src/content/dialogues/` への移動 = 公開判断は かげろう (Master) が行う**。
 hook が直接公開ディレクトリに書き込む実装は禁止（philosophy 第 6 条「人間最終承認」）。
 
 ### 2.3 Ignis 解題の自動バッチ生成を禁ずる
 
-Phase 2 で導入する Ignis 解題は **Master の通常作業セッション中の DH 経由生成に限る**。
+Phase 2 で導入する Ignis 解題は **かげろう (Master) の通常作業セッション中の DH 経由生成に限る**。
 過去対話を一括で API に投げて解題を量産する pipeline は禁止。
 AI コスト中立性 (SPEC §3.4.6) 違反。
 
 ### 2.4 他者の発話を Ignis dialogues として公開しない
 
-dialogues に登場する人間側発話は Master 本人のもののみ。
+dialogues に登場する人間側発話は かげろう (Master) 本人のもののみ。
 他 LLM サービス (ChatGPT 等) との対話を「Ignis との対話」として混ぜない。
 形式上の混同を避けるため。
 
@@ -72,7 +74,7 @@ dialogues に登場する人間側発話は Master 本人のもののみ。
 
 - `CLOUDFLARE_API_TOKEN` 等は GitHub Secrets のみ
 - `.env` は `.gitignore` に必ず含める
-- 過去 commit に漏れたら revoke + rewrite history（rewrite は Master 判断で）
+- 過去 commit に漏れたら revoke + rewrite history（rewrite は かげろう 判断で）
 
 ### 3.2 main ブランチへの直接 push を避ける（Phase 1+）
 
@@ -84,10 +86,26 @@ Cloudflare Pages の preview URL を確認してから merge。
 - analytics / ads / chat widget 等を `<script>` で追加しない
 - npm 追加時は bundle size 増分を確認
 
-### 3.4 dh-upgrades/hide-philosophy/ 配下に実装コードを置かない
+### 3.4 dh-upgrades/ai-tetsugaku-suru/ 配下に実装コードを置かない
 
 本ディレクトリは **仕様文書のみ**。実装は `site/` 配下。
 SPEC と実装の住み分けを守る（DH 本体の onboarding/archeo に倣う）。
+
+### 3.5 著者本名を repo / commit / build artifact に露出させない
+
+SPEC §0.3 通り、かげろう (Master) の本名は本サイトに一切記載しない。これは:
+
+- git commit author / committer の表示名
+- PR / Issue 内の本文
+- ビルド成果物の文字列リテラル
+
+すべてに適用される。誤って混入が判明した場合は rewrite history を含む対応を かげろう 判断で実施する。
+
+### 3.6 デザイン 4 確定事項の暗黙改変を禁ずる
+
+DESIGN.md §10「確定事項一覧」(Master 諮問 2026-05-21) の 10 項目（サイト名 / 著者表記 / Light/Dark Primary / 16px base / modular scale 1.2 / shadow 方針 / corner 方針 / 見出し typeface / dialogues 発話 typeface）は、**SPEC/DESIGN 改訂 + かげろう 明示承認なしに変えない**。
+
+特に corner 方針 (§5 diagonal asymmetric) と shadow 方針 (§6 hover 時のみ) は、サイト名 `--` との共鳴 (§1.3) を担う構造的決定であり、軽微な調整に見えても哲学的影響が連動する。改変提案は Council 諮問対象。
 
 ---
 
@@ -112,4 +130,4 @@ Notion / Contentful / microCMS 等の headless CMS との連携は本 SPEC ス�
 ### 4.4 「ついでに」Master 以外の著者を入れない
 
 ゲスト寄稿 / 共同執筆は本 SPEC スコープ外。
-「hide-philosophy」の固有名性を保つため。
+「ai--tetsugaku-suru」= かげろう の固有名性を保つため。

@@ -1,12 +1,43 @@
-# SPEC.md — hide-philosophy site
+# SPEC.md — ai--tetsugaku-suru site
 
-> Master (hide) 個人の哲学発信サイト。dialog-harness 開発を通じて醸成された
+> Master (かげろう) 個人の哲学発信サイト。dialog-harness 開発を通じて醸成された
 > AI 観・存在論・対話論を「自分の文章 (philosophy)」と「Ignis との対話 (dialogues)」
 > の二経路で公開する。
 
 - 関連: `INDEX.md` / `DONT.md` / `REGIME.md` / `DESIGN.md` / `CLAUDE.md`
-- Council 諮問起点: `/.claude/skills/crosscut-council/history/COUNCIL-LOG.md` の hide-philosophy dialogues 諮問
+- Council 諮問起点: `/.claude/skills/crosscut-council/history/COUNCIL-LOG.md` の ai--tetsugaku-suru dialogues 諮問 (council-2026-05-20T21:37:17Z-h7f3k2)
 - LC: 0 (新規)
+
+---
+
+## 0. サイト名と表記
+
+### 0.1 正式表記
+
+- **サイト名**: `ai--tetsugaku-suru` （double hyphen、意図的）
+- **読み**: 「えーあい てつがくする」
+- **意味**: 「AI〇哲学する」の `〇` を二重ハイフン `--` で表象する。`AI` と `tetsugaku-suru` の間にある `--` は、両者を結びつけない / 切断しない / 関係子そのものを「余白」として現前させる装置である
+- **著者**: かげろう（Master の呼称。PII 観点で本名は公開しない）
+- **著者英 slug**: `kagero`（Hepburn 母音省略、frontmatter / URL 等で使用）
+
+### 0.2 表記の階層
+
+| 層 | 表記 | 用途 |
+|---|---|---|
+| ロゴ・サイト名・本文中の言及 | `ai--tetsugaku-suru` (double hyphen) | 表記として正式 |
+| 識別子・URL slug・ディレクトリ名 | `ai-tetsugaku-suru` (single hyphen) | 技術的整合 |
+| 著者名（表示） | かげろう | dialogues 表示・著者欄 |
+| 著者名（slug） | `kagero` | frontmatter / data 層 |
+
+「ロゴ層」と「技術層」を分離することで、サイトの意味的表象を保ちつつシステム的扱いやすさを担保する。
+
+### 0.3 著者プライバシー
+
+Master の本名は本サイトに **一切記載しない**。GitHub アカウント名・コミット author も「かげろう」由来表記で統一する方針（Phase 0 で確定）。Master 自身の判断による例外のみ許容。
+
+### 0.4 視覚デザインとの共鳴
+
+サイト名 `ai--tetsugaku-suru` の `--`（結合しなさを置く記号）は、視覚レイヤーでは **diagonal asymmetric corner** (対角の二隅のみ rounded、残り対角は square) と同型である。詳細は `DESIGN.md §1.3 / §5`。
 
 ---
 
@@ -112,8 +143,8 @@ draft: false                # true なら公開しない
 title: <対話タイトル>
 recordedAt: <YYYY-MM-DD>    # 対話が行われた日
 publishedAt: <YYYY-MM-DD>   # サイトに公開した日
-participants: ["hide", "ignis"]
-format: raw | summary | exegesis   # 3 形態のどれか
+participants: ["kagero", "ignis"]   # data 層 slug。表示層では「かげろう」「ignis」
+format: raw | summary | exegesis    # 3 形態のどれか
 related: [<slug>, ...]      # 任意。raw ↔ summary ↔ exegesis のリンク
 masked: true                # C2 regex マスク済みを示す（必須）
 draft: false
@@ -126,10 +157,10 @@ draft: false
 
 ### 3.1 トップページ (`/`)
 
-- サイトタイトル + 一行説明
+- サイトタイトル `ai--tetsugaku-suru` + 一行説明
 - 最新 philosophy 記事 3 件のカード
 - dialogues セクション（Phase 0: footer の archive リンクのみ / Phase 1+: 最新対話 3 件カード）
-- Master の極短い自己紹介 → about へのリンク
+- かげろう の極短い自己紹介 → about へのリンク
 
 ### 3.2 philosophy ページ
 
@@ -138,8 +169,8 @@ draft: false
 
 ### 3.3 about ページ (`/about/`)
 
-- Master の自己紹介
-- このサイトの思想（philosophy + dialogues の二経路の意味）
+- かげろう の自己紹介（本名は出さない、§0.3）
+- このサイトの思想（philosophy + dialogues の二経路の意味、サイト名 `--` の意味論 §0.1）
 - dialog-harness へのリンク（GitHub）
 - Ignis 紹介（簡素）
 
@@ -151,8 +182,8 @@ draft: false
 
 | 形態 | 内容 | Phase で導入 |
 |---|---|---|
-| **raw** | 生 transcript。Master と Ignis の発話を改変せず掲載（マスクのみ適用） | Phase 0 から |
-| **summary** | 短文要約。Master が書く 200-400 字程度の "この対話の眼目" | Phase 0 から |
+| **raw** | 生 transcript。かげろう と Ignis の発話を改変せず掲載（マスクのみ適用） | Phase 0 から |
+| **summary** | 短文要約。かげろう が書く 200-400 字程度の "この対話の眼目" | Phase 0 から |
 | **exegesis** | Ignis 解題。対話を Ignis 視点で文脈化した解説。AI コスト中立性の制約下で生成 | Phase 2 から |
 
 3 形態は同じ対話セットに属し、frontmatter の `related` で相互リンクする。
@@ -161,9 +192,9 @@ draft: false
 
 | Phase | 取り込みフロー | コミット主体 |
 |---|---|---|
-| **B1** (Phase 0) | Master が手動で対話ログを `site/src/content/dialogues/<slug>.md` に貼り付け | Master |
-| **B2** (Phase 1) | DH の SessionEnd hook が transcript を `.dh/dialogues/staging/` に書き出し → Master が選別 → commit | hook + Master |
-| **B3** (Phase 2) | 半自動。Master の承認後、Ignis 解題生成も含めパイプライン化 | hook + Master + Ignis |
+| **B1** (Phase 0) | かげろう が手動で対話ログを `site/src/content/dialogues/<slug>.md` に貼り付け | かげろう |
+| **B2** (Phase 1) | DH の SessionEnd hook が transcript を `.dh/dialogues/staging/` に書き出し → かげろう が選別 → commit | hook + かげろう |
+| **B3** (Phase 2) | 半自動。かげろう の承認後、Ignis 解題生成も含めパイプライン化 | hook + かげろう + Ignis |
 
 #### 3.4.3 マスク機構 (止揚案 C2) — 全 Phase 必須
 
@@ -176,6 +207,7 @@ draft: false
 | パス（home 配下） | `/home/[^/\s]+/` | `/home/<user>/` |
 | GitHub token 風 | `gh[pousr]_[A-Za-z0-9]{36,}` | `<github-token>` |
 | 秘密キー風 | `(sk-|api[_-]?key)[A-Za-z0-9_-]{20,}` | `<secret>` |
+| Master 本名候補リスト | （非公開、scripts 内で定義） | `かげろう` |
 
 マスクスクリプトは `site/scripts/mask-dialogue.mjs`（Phase 0 で素朴な node スクリプト、Phase 1 で hook 統合）。
 frontmatter の `masked: true` が無い記事は build 時に失敗させる。
@@ -194,7 +226,7 @@ frontmatter の `masked: true` が無い記事は build 時に失敗させる。
 #### 3.4.6 AI コスト中立性 (止揚案 6)
 
 本サイトの運用で **追加の Claude API / Anthropic API 課金が発生してはならない**。
-Ignis 解題 (Phase 2) は Master の通常作業セッション中の DH 経由生成に限る。
+Ignis 解題 (Phase 2) は かげろう の通常作業セッション中の DH 経由生成に限る。
 バッチで Ignis を回す自動パイプラインは禁止（DONT.md 参照）。
 
 ---
@@ -218,6 +250,7 @@ Ignis 解題 (Phase 2) は Master の通常作業セッション中の DH 経由
 - アクセス解析は **入れない**（Phase 0/1）。入れる場合は Cloudflare Analytics（cookie-less）のみ検討
 - 訪問者から個人情報を取得する form なし
 - dialogues のマスクは §3.4.3 で必須
+- 著者 (かげろう) の本名は §0.3 通り一切記載しない
 
 ### 4.4 セキュリティ
 
@@ -235,7 +268,7 @@ Ignis 解題 (Phase 2) は Master の通常作業セッション中の DH 経由
 |---|---|---|
 | local | `http://localhost:4321` | 開発 |
 | preview | Cloudflare Pages preview URL | PR ごとに自動生成 |
-| production | (Master 確定後) | `main` ブランチ push で自動デプロイ |
+| production | (かげろう 確定後) | `main` ブランチ push で自動デプロイ |
 
 ### 5.2 GitHub Actions
 
@@ -254,14 +287,15 @@ Phase 0 を「立ち上げ完了」と判定する条件：
 - [ ] マスクスクリプトが動作し、未マスクの dialogues 記事は build を失敗させる
 - [ ] Cloudflare Pages にデプロイされ、production URL で閲覧可能
 - [ ] Lighthouse Performance ≥ 90 を 1 度は記録する
+- [ ] DESIGN.md §5 diagonal asymmetric corner が全 component で実装されている (visual check)
 
 ---
 
 ## 7. Phase 移行判定
 
-Master の意思決定で Phase を進める。AI 側からの自動 Phase 昇格はしない（philosophy 第 6 条）。
+かげろう (Master) の意思決定で Phase を進める。AI 側からの自動 Phase 昇格はしない（philosophy 第 6 条）。
 
-| 移行 | 引き金（Master の判断材料） |
+| 移行 | 引き金（かげろう の判断材料） |
 |---|---|
 | 0 → 1 | dialogues 記事が累積 5 本程度、手動運用に手間を感じ始めた |
 | 1 → 2 | dialogues 形式が安定し、Ignis 解題を試したい欲求 |
