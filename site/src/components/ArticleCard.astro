@@ -1,0 +1,16 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props {
+  entry: CollectionEntry<'philosophy'>;
+}
+const { entry } = Astro.props;
+const { title, description, publishedAt } = entry.data;
+---
+<a
+  href={`/philosophy/${entry.slug}/`}
+  class="block no-underline text-[var(--fg)] border border-[var(--border)] corner-asym-lg px-6 py-5 transition-[box-shadow,background-color] duration-200 hover:bg-[var(--ignis-tint)] hover:shadow-[var(--shadow-card-hover)]"
+>
+  <h3 class="font-mincho text-md mb-2">{title}</h3>
+  <p class="text-base text-[var(--muted)] mb-2 line-clamp-2">{description}</p>
+  <time datetime={publishedAt} class="text-xs text-[var(--muted)]">{publishedAt}</time>
+</a>

@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #fafaf7;
+    --fg: #1a1a1a;
+    --muted: #6b6b66;
+    --primary: #3a5a8c;
+    --primary-hover: #1f3a6b;
+    --border: #e0e0d8;
+    --ignis-tint: #c5d4e8;
+    --shadow-card-hover: 0 2px 8px rgba(26, 26, 26, 0.06);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #13141a;
+      --fg: #e8e6e0;
+      --muted: #8a8a85;
+      --primary: #4ab3ee;
+      --primary-hover: #7ac8f0;
+      --border: #2a2c34;
+      --ignis-tint: #1f2a3a;
+      --shadow-card-hover: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  html {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: theme('fontFamily.sans');
+    letter-spacing: 0.01em;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: theme('fontFamily.mincho');
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  a:hover {
+    color: var(--primary-hover);
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 0;
+  }
+}
+
+@layer utilities {
+  .corner-asym-sm {
+    border-top-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .corner-asym-md {
+    border-top-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .corner-asym-lg {
+    border-top-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .corner-asym-xl {
+    border-top-left-radius: 24px;
+    border-bottom-right-radius: 24px;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .corner-asym-2xl {
+    border-top-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .corner-asym-full {
+    border-top-left-radius: 9999px;
+    border-bottom-right-radius: 9999px;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+  }
+}

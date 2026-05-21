@@ -1,0 +1,21 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import DialogueEntry from '~/components/DialogueEntry.astro';
+import { getCollection } from 'astro:content';
+
+const dialogues = (await getCollection('dialogues', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.recordedAt.localeCompare(a.data.recordedAt));
+---
+<BaseLayout title="dialogues archive">
+  <h1 class="font-mincho text-2xl mb-6">dialogues archive</h1>
+  <p class="text-sm text-[var(--muted)] mb-8">
+    Phase 0 では dialogues は本 archive ページにのみリストされます。Phase 1+ で独立した dialogues トップが追加されます。
+  </p>
+  {dialogues.length === 0 ? (
+    <p class="text-base text-[var(--muted)]">まだ公開された対話はありません。</p>
+  ) : (
+    <div class="space-y-4">
+      {dialogues.map((entry) => <DialogueEntry entry={entry} />)}
+    </div>
+  )}
+</BaseLayout>

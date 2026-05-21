@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { PARTICIPANT_DISPLAY } from '~/lib/constants';
+
+interface Props {
+  entry: CollectionEntry<'dialogues'>;
+}
+const { entry } = Astro.props;
+const { title, recordedAt, format, participants } = entry.data;
+
+const formatLabels: Record<string, string> = {
+  raw: '生',
+  summary: '要約',
+  exegesis: '解題',
+};
+---
+<a
+  href={`/dialogues/${entry.slug}/`}
+  class="block no-underline text-[var(--fg)] border border-[var(--border)] corner-asym-lg px-6 py-5 transition-[box-shadow,background-color] duration-200 hover:bg-[var(--ignis-tint)] hover:shadow-[var(--shadow-card-hover)]"
+>
+  <div class="flex items-start gap-3 mb-2">
+    <h3 class="font-mincho text-md flex-1">{title}</h3>
+    <span class="inline-block bg-[var(--ignis-tint)] text-[var(--primary)] text-xs px-3 py-1 corner-asym-full whitespace-nowrap">
+      {formatLabels[format]}
+    </span>
+  </div>
+  <p class="text-sm text-[var(--muted)] mb-2">
+    {participants.map((p) => PARTICIPANT_DISPLAY[p] ?? p).join(' ↔ ')}
+  </p>
+  <time datetime={recordedAt} class="text-xs text-[var(--muted)]">{recordedAt}</time>
+</a>

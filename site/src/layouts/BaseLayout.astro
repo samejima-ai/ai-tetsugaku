@@ -1,0 +1,47 @@
+---
+import '~/styles/global.css';
+import { SITE_NAME_DISPLAY, SITE_TAGLINE } from '~/lib/constants';
+import Footer from '~/components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = SITE_TAGLINE } = Astro.props;
+const fullTitle = title ? `${title} — ${SITE_NAME_DISPLAY}` : SITE_NAME_DISPLAY;
+---
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Noto+Sans+JP:wght@400;500&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <title>{fullTitle}</title>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-[var(--bg)] focus:text-[var(--fg)] focus:px-3 focus:py-2 focus:border focus:border-[var(--border)]"
+    >
+      本文へスキップ
+    </a>
+    <header class="border-b border-[var(--border)]">
+      <div class="max-w-[680px] mx-auto px-6 md:px-8 py-4">
+        <a href="/" class="font-mincho text-md no-underline text-[var(--fg)]">{SITE_NAME_DISPLAY}</a>
+      </div>
+    </header>
+    <main id="main" class="flex-1 max-w-[680px] w-full mx-auto px-6 md:px-8 py-8">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
