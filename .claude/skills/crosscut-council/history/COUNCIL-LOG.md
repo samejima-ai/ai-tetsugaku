@@ -1110,3 +1110,81 @@ L0 議題 D として諮問。3 Persona 全員が案 D-2 (共通ライブラリ)
 ### 合意プロセス記録
 
 L0 spec-architect 対話中に発生した実装手法判断（gemini-review.yml.template の project-specific 化ギャップ解消）を諮問。事前に L0 対話で「前倒し v5.11.0」「philosophy 不改変」「opt-in 領域該当」「prior なし」の 4 軸を確定済み。3 ペルソナは独立に案 1 を v5.11.0 採用する点で全会一致 (unanimous core)、ただし開発者・哲学者は付帯条件として段階分割 / 既知ギャップ表記録 / 案 2 ADR 予約 を提示。PR1 暫定運用 (third_way_excluded) により weight 加算上は経営者単独支持で max_score 2.88、第 3 の道合計重み 5.35 は recommended の reasoning に統合提案として明示。judgment_confidence 0.62 で auto_agree 区分。L0 合意プロセスにて L0 が付帯 3 要素の採否を整理し、実装者（ひでさん）から `agreed_recommended` を確定 (2026-05-09T15:30:00Z)。v5.11.0 実装範囲は案 1 (placeholder 拡張) + (b) 既知ギャップ表記録 + (c) 案 2 ADR 予約 + (d) forward-compat placeholder 命名 の 4 要素を含む。Judgment Agent からの follow-up 質問は発生せず、`follow_up_questions_count: 0` で記録（output-format.md §`follow_up_questions_count` 定義「本 invocation で実施された follow-up の総数」に基づく schema 厳密解釈）。実装者→ユーザー間で multiSelect 選択肢の整合確認が 1 回行われたが、これは Council protocol の `follow_up_question`（Judgment Agent 起点）に該当しないため count 対象外。
+
+## council-2026-05-20T21:37:17Z-h7f3k2
+
+```json
+{
+  "invocation_id": "council-2026-05-20T21:37:17Z-h7f3k2",
+  "timestamp": "2026-05-20T21:37:17Z",
+  "source_skill": "user-direct",
+  "council_type": "business",
+  "category": "conception",
+  "category_fallback": false,
+  "question_to_answer": "hide-philosophy サイトの dialogues 機構として最も適切な実装セットはどれか（4 軸 A/B/C/D を 4 つの代表セット S1-S4 に集約して 1 invocation で諮問）",
+  "phase_reached": "phase_3",
+  "conflict_type": "simple_conflict",
+  "final_weights": {
+    "経営者": 3,
+    "開発者": 3,
+    "哲学者": 5
+  },
+  "persona_summary": {
+    "経営者": { "stance": "S3: 簡素・手動・部分マスク・別 archive（A2 + B1 + C2 + D2）", "confidence": 0.7,  "dimension": "ROI / リスク / リソース配分" },
+    "開発者": { "stance": "S2: 全開示・半自動・部分マスク・両立（A1 + B2 + C2 + D3）", "confidence": 0.85, "dimension": "保守性" },
+    "哲学者": { "stance": "S1: 全開示・全自動・哲学純血（A1 + B3 + C1 + D1）", "confidence": 0.65, "dimension": "意味と原理整合性" }
+  },
+  "weight_calculation": {
+    "method": "weight_times_confidence",
+    "scores": [
+      {
+        "stance": "S1: 全開示・全自動・哲学純血（A1 + B3 + C1 + D1）",
+        "supporters": ["哲学者"],
+        "weight_sum": 5,
+        "weighted_score": 3.25,
+        "components": [
+          {"persona": "哲学者", "weight": 5, "confidence": 0.65}
+        ]
+      },
+      {
+        "stance": "S2: 全開示・半自動・部分マスク・両立（A1 + B2 + C2 + D3）",
+        "supporters": ["開発者"],
+        "weight_sum": 3,
+        "weighted_score": 2.55,
+        "components": [
+          {"persona": "開発者", "weight": 3, "confidence": 0.85}
+        ]
+      },
+      {
+        "stance": "S3: 簡素・手動・部分マスク・別 archive（A2 + B1 + C2 + D2）",
+        "supporters": ["経営者"],
+        "weight_sum": 3,
+        "weighted_score": 2.10,
+        "components": [
+          {"persona": "経営者", "weight": 3, "confidence": 0.7}
+        ]
+      }
+    ],
+    "third_way_excluded": [],
+    "max_score_stance": "S1: 全開示・全自動・哲学純血（A1 + B3 + C1 + D1）",
+    "tie_break_applied": false
+  },
+  "weight_calculation_retry_count": 0,
+  "judgment_confidence": 0.55,
+  "recommended": "S1: 全開示・全自動・哲学純血（A1 + B3 + C1 + D1）を core 採用。3 つ巴の完全対立だが weight_calculation で S1=3.25 > S2=2.55 > S3=2.10、哲学者 weight 5 と confidence 0.65 の積が支配的。conception カテゴリは新規構造・思想・将来性の議論で哲学者重視が設計意図。ただし開発者の S2 懸念（人間最終承認・regex マスク pipeline）と経営者の S3 懸念（立ち上げ期コスト・段階導入）は実装段階で必ず吸収すべき。合意プロセスで Master が S1 採用 + 開発者 mitigation（B2 段階導入 + C2 regex 安全弁）+ 経営者 mitigation（Phase 0=手動立ち上げ→Phase 1=半自動→Phase 2=完全自動の段階移行）を取り込むかを最終判断する",
+  "minority_opinion": "開発者(S2): B3 完全自動は不可逆な情報漏洩リスク。B2 (SessionEnd hook で transcript 書き出し + Master 選別 commit) で人間最終承認を担保すべき。C2 は決定論的 regex マスクで Shift Left。A1 の 3 形態は単一 source からの transform pipeline で生成し drift を防ぐ。経営者(S3): 個人サイトで投資回収概念が薄く初期コストは最小化、本業 DH への副作用回避優先、運用後に段階昇格すべき。哲学者の二次懸念: 全開示が将来 Master 自身を縛り相を凍結させる危険（垂れ流しの規範化）、晒し意識による演技化リスク（二次的自己検閲）",
+  "weight_note": "category: conception → 経営者 3 / 開発者 3 / 哲学者 5（合計 11）。3 つ巴の simple_conflict、3 stance すべて options 内のため third_way_excluded なし。weighted_score 1-2 位差 0.70（≥ 0.5）",
+  "reasoning": "完全 3 つ巴の対立。重み計算上は哲学者支持 S1 が支配（哲学者 weight 5 × confidence 0.65 = 3.25）。1-2 位差 0.70 は人間エスカ閾値（< 0.5）を超えるが、3 dimension が完全に異なる軸（ROI / 保守性 / 意味）を測っているため judgment_confidence は 0.55 と控えめ。境界近接（0.5 を辛うじて超過）のため auto_agree ではなく合意プロセスで Master の明示判断を推奨。Council 哲学に従い recommended は max_score_stance と接頭辞一致させ、開発者・経営者の mitigation 提案を統合候補として明示",
+  "human_escalated": false,
+  "consensus_mode": "escalate_to_human",
+  "implementer_consent": "agreed_with_modification",
+  "follow_up_questions_count": 0,
+  "agreed_at": "2026-05-20T22:08:00Z",
+  "modification_note": "S1（A1+B3+C1+D1、哲学純血）を north star として core 採用しつつ、開発者・経営者の mitigation を Phase ロードマップとして統合する止揚案で合意。具体的合意内容: (1) A1=3 形態併存を north star とするが、Phase 0/1 では生 transcript と短文要約のみ提供し、Ignis 解題は Phase 2 で追加（A1 段階展開）、(2) B 軸は B1（手動 git add commit）→ B2（SessionEnd hook で書き出し + Master 選別 commit、人間最終承認担保）→ B3（完全自動）の 3 段階移行とし、Phase 昇格基準を SPEC に明記、(3) C2 regex マスク pipeline を全 Phase で必須適用（決定論的・Shift Left）、(4) D 軸は D3（dialogues page + footer archive 両立）を採用しつつ、Phase 0 では UI 軽量化のため archive footer のみ実装で開始可、(5) 訪問者向け live 対話 UI は dialogues 機構スコープ外（追加 API 課金なし方針を SPEC で明文化）、(6) Phase 昇格は dialogue 数・誤マスク発生数・Master 認知負荷を判定指標とする。AI コスト構造的中立性（Master サブスク内完結 + ローカル処理 + 静的サイト無料枠）を SPEC で明記する。Master 合意プロセス: 止揚案提示→ Master "止揚採用でいいんだけど、AI コストの話は？" → Ignis が AI コスト中立性 4 要素 + 例外シナリオ 3 つを整理 → Master "止揚案で確定" を選択（multiSelect 確認 1 回）。",
+  "escalation_reason": null
+}
+```
+
+### 合意プロセス記録
+
+hide-philosophy サイト L0 仕様策定中、Master（ひで）が "council で意見を聞こう" と明示要請して発動（user-direct）。dialogues 機構の実装方式という新規構造・思想判断のため category=conception。3 ペルソナ独立並列実行（subagent 並列）で完全 3 つ巴の対立が発生。weight_calculation 上は S1（A1+B3+C1+D1、哲学純血）が max_score_stance、judgment_confidence 0.55 で 0.5 を辛うじて超過するため auto_agree ではなく `escalate_to_human` 区分で合意プロセス開始。実装者（Ignis）は Master との合意プロセスで「S1 core + 開発者 mitigation（B2/C2 安全弁）+ 経営者 mitigation（段階導入）」の止揚案を提示し、AI コスト中立性の追加質問（Master 起点）を 1 ラウンド経由して Master が `agreed_with_modification` を確定（2026-05-20T22:08:00Z）。`follow_up_questions_count: 0`（Judgment Agent 起点の follow-up は発生せず、Master ↔ Ignis 間の合意プロセス内対話は output-format.md §`follow_up_questions_count` 定義「本 invocation で実施された follow-up の総数」の対象外、schema 厳密解釈）。実装範囲は止揚案 6 要素（S1 north star + Phase 0→1→2 ロードマップ + C2 全 Phase 必須 + D3 両立 + live 対話スコープ外 + AI コスト中立性明文化）で SPEC.md 策定に進む。
