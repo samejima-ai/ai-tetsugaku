@@ -1,0 +1,52 @@
+name: Deploy site to Cloudflare Pages
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'site/**'
+      - '.github/workflows/deploy-site.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: site/pnpm-lock.yaml
+
+      - name: Install
+        working-directory: site
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        working-directory: site
+        run: pnpm build
+
+      - name: Run mask test
+        working-directory: site
+        run: pnpm test
+
+      # Cloudflare Pages deploy is gated. Master must:
+      #   1. Set GitHub Secrets: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID
+      #   2. Create a Cloudflare Pages project named `ai-tetsugaku-suru`
+      #   3. Remove the `if: ${{ false }}` guard below
+      - name: Deploy to Cloudflare Pages (gated)
+        if: ${{ false }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy site/dist --project-name=ai-tetsugaku-suru

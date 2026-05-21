@@ -1,0 +1,63 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { PARTICIPANT_DISPLAY, FORMAT_LABELS } from '~/lib/constants';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('dialogues', ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'dialogues'>;
+}
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const { title, recordedAt, publishedAt, participants, format } = entry.data;
+---
+<BaseLayout title={title}>
+  <nav class="text-sm text-[var(--muted)] mb-4">
+    <a href="/dialogues/archive/">dialogues archive</a>
+  </nav>
+  <h1 class="font-mincho text-2xl mb-2">{title}</h1>
+  <div class="text-sm text-[var(--muted)] mb-2 flex flex-wrap items-center gap-2">
+    <time datetime={recordedAt}>記録: {recordedAt}</time>
+    <span>·</span>
+    <time datetime={publishedAt}>公開: {publishedAt}</time>
+    <span>·</span>
+    <span class="inline-block bg-[var(--ignis-tint)] text-[var(--primary)] text-xs px-3 py-1 corner-asym-full">
+      {FORMAT_LABELS[format]}
+    </span>
+  </div>
+  <p class="text-sm text-[var(--muted)] mb-6">
+    {participants.map((p) => PARTICIPANT_DISPLAY[p] ?? p).join(' ↔ ')}
+  </p>
+  <hr class="border-[var(--border)] mb-8" />
+  <article class="prose-article">
+    <Content />
+  </article>
+</BaseLayout>
+
+<style>
+  .prose-article :global(p) {
+    margin-bottom: 1.5rem;
+    line-height: 1.85;
+  }
+  .prose-article :global(blockquote) {
+    border-left: 2px solid var(--border);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    font-family: 'Shippori Mincho', 'Noto Serif JP', Georgia, serif;
+    line-height: 1.8;
+  }
+  .prose-article :global(code) {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    background-color: var(--ignis-tint);
+    padding: 0.1rem 0.3rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+</style>

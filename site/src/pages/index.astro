@@ -1,0 +1,41 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ArticleCard from '~/components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+import { SITE_NAME_DISPLAY, SITE_TAGLINE } from '~/lib/constants';
+
+const philosophy = (await getCollection('philosophy', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.localeCompare(a.data.publishedAt))
+  .slice(0, 3);
+---
+<BaseLayout>
+  <section class="mb-16">
+    <h1 class="font-mincho text-3xl mb-4">{SITE_NAME_DISPLAY}</h1>
+    <p class="text-base text-[var(--muted)]">{SITE_TAGLINE}</p>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-sm text-[var(--muted)] uppercase tracking-widest mb-6">— philosophy —</h2>
+    {philosophy.length === 0 ? (
+      <p class="text-base text-[var(--muted)]">まだ公開された記事はありません。</p>
+    ) : (
+      <div class="space-y-4">
+        {philosophy.map((entry) => <ArticleCard entry={entry} />)}
+      </div>
+    )}
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-sm text-[var(--muted)] uppercase tracking-widest mb-6">— dialogues —</h2>
+    <p class="text-base text-[var(--muted)]">
+      対話の archive は <a href="/dialogues/archive/">こちら</a> から。
+    </p>
+  </section>
+
+  <section>
+    <h2 class="text-sm text-[var(--muted)] uppercase tracking-widest mb-6">— about —</h2>
+    <p class="text-base">
+      <a href="/about/">かげろう について</a>。
+    </p>
+  </section>
+</BaseLayout>
