@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { PARTICIPANT_DISPLAY } from '~/lib/constants';
+import { PARTICIPANT_DISPLAY, FORMAT_LABELS } from '~/lib/constants';
 
 export async function getStaticPaths() {
   const entries = await getCollection('dialogues', ({ data }) => !data.draft);
@@ -17,12 +17,6 @@ interface Props {
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 const { title, recordedAt, publishedAt, participants, format } = entry.data;
-
-const formatLabels: Record<string, string> = {
-  raw: '生',
-  summary: '要約',
-  exegesis: '解題',
-};
 ---
 <BaseLayout title={title}>
   <nav class="text-sm text-[var(--muted)] mb-4">
@@ -35,7 +29,7 @@ const formatLabels: Record<string, string> = {
     <time datetime={publishedAt}>公開: {publishedAt}</time>
     <span>·</span>
     <span class="inline-block bg-[var(--ignis-tint)] text-[var(--primary)] text-xs px-3 py-1 corner-asym-full">
-      {formatLabels[format]}
+      {FORMAT_LABELS[format]}
     </span>
   </div>
   <p class="text-sm text-[var(--muted)] mb-6">

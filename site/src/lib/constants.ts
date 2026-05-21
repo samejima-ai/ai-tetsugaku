@@ -8,3 +8,9 @@ export const PARTICIPANT_DISPLAY: Record<string, string> = {
   kagero: 'かげろう',
   ignis: 'ignis',
 };
+
+export const FORMAT_LABELS: Record<'raw' | 'summary' | 'exegesis', string> = {
+  raw: '生',
+  summary: '要約',
+  exegesis: '解題',
+};

@@ -3,7 +3,7 @@
 // 使用例: node scripts/mask-dialogue.mjs < input.md > output.md
 
 import { readFileSync, existsSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 const SECRETS_PATH = resolve(dirname(fileURLToPath(import.meta.url)), 'secrets', 'master-names.json');
@@ -42,7 +42,7 @@ export function maskText(text, masterNames = []) {
   return out;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   const input = readFileSync(0, 'utf-8');
   const masterNames = loadMasterNames();
   process.stdout.write(maskText(input, masterNames));
