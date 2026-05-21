@@ -76,7 +76,7 @@ dialogues に登場する人間側発話は かげろう (Master) 本人のも�
 - `.env` は `.gitignore` に必ず含める
 - 過去 commit に漏れたら revoke + rewrite history（rewrite は かげろう 判断で）
 
-### 3.2 main ブランチへの直接 push を避ける（Phase 1+）
+### 3.2 master ブランチへの直接 push を避ける（Phase 1+）
 
 Phase 0 は単独運用で OK だが、Phase 1 以降は PR 経由を原則とする。
 Cloudflare Pages の preview URL を確認してから merge。
