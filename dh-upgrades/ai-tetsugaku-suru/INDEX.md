@@ -13,6 +13,7 @@ dh-upgrades/ai-tetsugaku-suru/ 配下に仕様一式、リポジトリ root の 
 | `REGIME.md` | モード / dev_mode / persona / LC |
 | `DESIGN.md` | 視覚仕様（色調・タイポ・レイアウト思想・シェイプ言語） |
 | `CLAUDE.md` | AI 開発時の指針（このサイト固有） |
+| `MANUAL.md` | 人間 (Master) が手元で実行する手順書（account 操作・公開承認・Lighthouse 計測など） |
 
 ## 実装側のディレクトリ（リポジトリ root 直下、本 SPEC では参照のみ）
 
