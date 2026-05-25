@@ -32,7 +32,7 @@ ai-tetsugaku/
 │   ├── public/
 │   ├── astro.config.mjs
 │   └── package.json
-└── .github/workflows/               ← Cloudflare Pages デプロイ用
+└── .github/workflows/               ← site CI（build+mask test）。deploy は Vercel Git 連携
 ```
 
 ## 関連ドキュメント（DH 本体側、本サイト独立性のため参照のみ）

@@ -112,8 +112,8 @@ DH 開発を通じて Master の中に醸成された AI 観・存在論・対�
 | サイト生成 | Astro v4+ | 静的サイト、MDX 一級サポート、軽量、ホスト無料枠で完結 |
 | コンテンツ形式 | MDX (philosophy) / Markdown (dialogues) | philosophy は記事内に React コンポーネント埋め込み余地、dialogues は素直な対話ログ |
 | スタイリング | Tailwind CSS v3+ | 抑制的なデザインに合う、保守容易 |
-| ホスティング | Cloudflare Pages | 無料枠で十分、グローバル CDN、Workers 連携余地 |
-| デプロイ | GitHub Actions → Cloudflare Pages | dev_mode = github_assisted の前提と一致 |
+| ホスティング | Vercel | 無料枠（Hobby、非商用）で十分、グローバル CDN、Git 連携が容易（ADR-0001） |
+| デプロイ | Vercel Git 連携（Root Directory = `site/`） | master push で本番・PR で preview 自動。build に mask ゲート同梱 |
 | Node | LTS（v20 系） | Astro v4 要件 |
 | パッケージ管理 | pnpm | 個人サイト規模で十分高速 |
 
@@ -344,7 +344,7 @@ collection 名の物理改名（`philosophy` → `crystals`）は接合方針（
 ### 4.1 性能
 
 - Lighthouse Performance ≥ 90（main pages on desktop）
-- LCP ≤ 2.0s（Cloudflare Pages 経由、Tokyo region）
+- LCP ≤ 2.0s（Vercel Edge Network 経由）
 
 ### 4.2 SEO / accessibility
 
@@ -355,7 +355,7 @@ collection 名の物理改名（`philosophy` → `crystals`）は接合方針（
 
 ### 4.3 プライバシー
 
-- アクセス解析は **入れない**（Phase 0/1）。入れる場合は Cloudflare Analytics（cookie-less）のみ検討
+- アクセス解析は **入れない**（Phase 0/1）。Vercel Web Analytics / Speed Insights も script 注入のため入れない。必要なら Phase 2+ で cookie-less 手段を ADR 付きで検討
 - 訪問者から個人情報を取得する form なし
 - dialogues のマスクは §3.4.3 で必須
 - 著者 (かげろう) の本名は §0.3 通り一切記載しない
@@ -364,7 +364,7 @@ collection 名の物理改名（`philosophy` → `crystals`）は接合方針（
 
 - 静的サイトのため攻撃面は最小
 - secrets は `.env` 経由のみ、git に commit しない（`.gitignore` 必須）
-- Cloudflare Pages の deployment token は GitHub Secrets で管理
+- Vercel は Git 連携のため deploy token を GitHub に置かない（GitHub Actions 経由にする場合のみ `VERCEL_TOKEN` 等を GitHub Secrets で管理）
 
 ---
 
@@ -375,12 +375,14 @@ collection 名の物理改名（`philosophy` → `crystals`）は接合方針（
 | 環境 | URL | 用途 |
 |---|---|---|
 | local | `http://localhost:4321` | 開発 |
-| preview | Cloudflare Pages preview URL | PR ごとに自動生成 |
+| preview | Vercel preview URL | PR ごとに自動生成（Git 連携） |
 | production | (かげろう 確定後) | `master` ブランチ push で自動デプロイ |
 
 ### 5.2 GitHub Actions
 
-- `.github/workflows/deploy-site.yml`: `site/` 配下変更時に build → Cloudflare Pages デプロイ
+- デプロイは Vercel（Git 連携）が担う。GitHub Actions では deploy しない
+- `.github/workflows/site-ci.yml`: `site/` 配下変更時（push / PR）に build + mask test を回す GitHub 側ゲート
+- `site/vercel.json`: Vercel の `buildCommand` に `pnpm test && pnpm build` を指定し mask ゲートを維持
 - Phase 1+ で SessionEnd hook 連携の workflow を追加
 
 ---
@@ -394,7 +396,7 @@ Phase 0 を「立ち上げ完了」と判定する条件：
 - [ ] dialogues（過程）記事 1 本以上が最小整形（時系列保持・マスク・改行正規化のみ、発話無改変）で公開できる
 - [ ] 結晶（過程の区切り）1 本以上が、過程に紐づいた形で公開でき、ストリームから飛び石導線で到達できる
 - [ ] マスクスクリプトが動作し、未マスクの dialogues 記事は build を失敗させる
-- [ ] Cloudflare Pages にデプロイされ、production URL で閲覧可能
+- [ ] Vercel にデプロイされ、production URL で閲覧可能
 - [ ] Lighthouse Performance ≥ 90 を 1 度は記録する
 - [ ] DESIGN.md §5 diagonal asymmetric corner が全 component で実装されている (visual check)
 

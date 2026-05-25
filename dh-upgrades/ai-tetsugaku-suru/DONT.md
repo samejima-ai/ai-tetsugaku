@@ -25,7 +25,7 @@ Council 止揚案 5 で確定。理由は AI コスト中立性 (§6) 違反に�
 ### 1.3 アクセス解析・トラッキングを入れない（Phase 0/1）
 
 Google Analytics / Hotjar / PostHog 等は入れない。
-Phase 2 以降で必要に応じて Cloudflare Analytics (cookie-less) のみ検討可。
+Phase 2 以降で必要に応じて cookie-less 解析のみ検討可（Vercel Web Analytics / Speed Insights は script 注入のため入れない、ADR-0001）。
 入れる場合は ADR + SPEC §4.3 改訂が必須。
 
 ### 1.4 動的機能を入れない
@@ -95,14 +95,14 @@ dialogues に登場する人間側発話は かげろう (Master) 本人のも�
 
 ### 3.1 secrets を git に commit しない
 
-- `CLOUDFLARE_API_TOKEN` 等は GitHub Secrets のみ
+- デプロイ token を git に commit しない（Vercel は Git 連携で token 不要。GitHub Actions 経由にする場合のみ `VERCEL_TOKEN` 等を GitHub Secrets に）
 - `.env` は `.gitignore` に必ず含める
 - 過去 commit に漏れたら revoke + rewrite history（rewrite は かげろう 判断で）
 
 ### 3.2 master ブランチへの直接 push を避ける（Phase 1+）
 
 Phase 0 は単独運用で OK だが、Phase 1 以降は PR 経由を原則とする。
-Cloudflare Pages の preview URL を確認してから merge。
+Vercel の preview URL を確認してから merge。
 
 ### 3.3 サードパーティ JS の無自覚な追加を禁ずる
 

@@ -48,8 +48,8 @@ autonomous_scope: null   # autonomous でないため適用なし
 
 | 候補 | 採用 | 理由 |
 |---|---|---|
-| local_only | × | Cloudflare Pages デプロイに GitHub Actions を使う |
-| **github_assisted** | ✓ | GitHub Actions で build + deploy、Issue 化は手動、AI 自動 PR なし |
+| local_only | × | Vercel（Git 連携）でデプロイ＋GitHub で PR/CI を回す |
+| **github_assisted** | ✓ | GitHub で PR/CI（build+mask test）、deploy は Vercel Git 連携、Issue 化は手動、AI 自動 PR なし |
 | autonomous | × | Phase 0/1 では過剰。Phase 2 以降で再評価 |
 
 ### 3.1 CTL (Continuous Trust Level)
@@ -135,7 +135,7 @@ Claude.ai からの HANDOFF v2 を起点に、本サイトの存在論を反転�
 
 ### 9.2 統合戦略 = 接合して反転（merge/flip）
 
-v1 資産は保持し、framing / IA / 結晶概念のみ反転・追加。保持: 命名 `--` / Ignis / コスト中立 / dialogues 機構内部（3 形態・マスク・B1-B3）/ Astro+Cloudflare / M1+github_assisted / Council 止揚案。
+v1 資産は保持し、framing / IA / 結晶概念のみ反転・追加。保持: 命名 `--` / Ignis / コスト中立 / dialogues 機構内部（3 形態・マスク・B1-B3）/ Astro（静的、ホスティングは ADR-0001 で Vercel に変更）/ M1+github_assisted / Council 止揚案。
 
 ### 9.3 確定した 4 決定（L0 対話）
 

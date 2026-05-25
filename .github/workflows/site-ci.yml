@@ -1,0 +1,44 @@
+name: site CI
+
+# build + mask gate test。deploy は Vercel（Git 連携）が担うため本 workflow では行わない。
+# Vercel 側 build も site/vercel.json の buildCommand (pnpm test && pnpm build) でゲートする。
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'site/**'
+      - '.github/workflows/site-ci.yml'
+  pull_request:
+    paths:
+      - 'site/**'
+      - '.github/workflows/site-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: site/pnpm-lock.yaml
+
+      - name: Install
+        working-directory: site
+        run: pnpm install --frozen-lockfile
+
+      - name: Build (astro check + build)
+        working-directory: site
+        run: pnpm build
+
+      - name: Mask gate test
+        working-directory: site
+        run: pnpm test
