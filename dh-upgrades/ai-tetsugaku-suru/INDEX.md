@@ -1,6 +1,7 @@
 # INDEX.md — ai--tetsugaku-suru site
 
-Master (かげろう) の哲学発信サイト。dialog-harness の利用者プロジェクトとして位置づけ、
+Master (かげろう) の **思考遊技場**——考えることそれ自体が目的の場（現代のアカデメイア）。
+**過程（思考の河）が本体、結晶は過程の区切り（飛び石）**。dialog-harness の利用者プロジェクトとして、
 dh-upgrades/ai-tetsugaku-suru/ 配下に仕様一式、リポジトリ root の `site/` 配下に実装を置く。
 
 ## ドキュメント構成
@@ -8,7 +9,7 @@ dh-upgrades/ai-tetsugaku-suru/ 配下に仕様一式、リポジトリ root の 
 | ファイル | 役割 |
 |---|---|
 | `INDEX.md` | 本ファイル。全体構成図 |
-| `SPEC.md` | 何を作るか（コンテンツ・機構・dialogues 機構の Phase 移行）、サイト名と著者表記の意味論 |
+| `SPEC.md` | 何を作るか（過程＝本体 / 結晶＝区切りの存在論、コンテンツ・機構・Phase 移行）、サイト名と著者表記の意味論 |
 | `DONT.md` | 何をやらないか（スコープ外明示） |
 | `REGIME.md` | モード / dev_mode / persona / LC |
 | `DESIGN.md` | 視覚仕様（色調・タイポ・レイアウト思想・シェイプ言語） |
@@ -42,8 +43,8 @@ ai-tetsugaku/
 
 ## Phase ロードマップ
 
-| Phase | 概要 | dialogues 形態 | 自動化レベル |
+| Phase | 概要 | 過程ストリーム形態 | 自動化レベル |
 |---|---|---|---|
-| 0 | 立ち上げ。philosophy 記事 3-5 本 + dialogues archive footer のみ | 手動 commit (B1) | local_only 相当 |
-| 1 | dialogues page を独立追加。SessionEnd hook で書き出し | hook + Master 選別 commit (B2) | github_assisted |
+| 0 | 立ち上げ。**過程ストリームをホーム主役**に。結晶 1 本 + dialogues archive footer | 手動 commit (B1) | local_only 相当 |
+| 1 | format 別入口を増設。SessionEnd hook で staging 書き出し | hook + Master 承認 commit (B2) | github_assisted |
 | 2 | Ignis 解題を併設。3 形態併存（生 + 短文要約 + 解題） | 半自動 + 解題生成 (B3) | github_assisted |
