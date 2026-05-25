@@ -61,7 +61,7 @@ DONT §3.5 通り、かげろう (Master) の本名を commit author / PR 本文
 
 ### 2.2 PR 作成時
 
-- [ ] Cloudflare Pages preview URL で表示を確認
+- [ ] Vercel preview URL で表示を確認
 - [ ] Lighthouse Performance ≥ 90 を維持
 - [ ] dark / light 両モードで visual regression なし
 - [ ] diagonal asymmetric corner (DESIGN §5) が新規 component に適用されている
@@ -134,7 +134,7 @@ DH transcript 由来の dialogues は改行が CRLF 混じりになる可能性�
 ### 6.3 OGP 画像の生成
 
 自動生成は本 SPEC で扱わない。手動で `public/og/` に置く方針。
-将来 Cloudflare Workers 経由の動的生成を検討する可能性あり。
+将来 Vercel OG Image 等の動的生成を検討する可能性あり。
 
 ### 6.4 サイト名 double hyphen の URL 化事故
 

@@ -44,45 +44,31 @@ pnpm dev         # http://localhost:4321 を開いて表示確認
 
 問題があれば PR を起こして DESIGN/SPEC との差分を Council 諮問。
 
-### 2. Cloudflare Pages 準備
+### 2. Vercel 準備（Git 連携。ADR-0001）
 
-#### 2.1 Cloudflare account + Pages project
+#### 2.1 Vercel に repo を import
 
-1. https://dash.cloudflare.com にログイン (account 無ければ作成)
-2. 左メニュー > **Workers & Pages** > Create application > Pages
-3. **Direct Upload (or Connect to Git で進めても良いが、本構成では GitHub Actions 経由 deploy が前提なので Direct Upload 推奨)** を選択して project を作成
-   - Project name: **`ai-tetsugaku-suru`** (workflow の `--project-name` と完全一致させる)
-   - Production branch: `master`
-   - Build settings: GitHub Actions 側でビルドするため空欄で良い
+1. https://vercel.com にログイン (GitHub account でサインイン可)
+2. **Add New… > Project** > GitHub の `samejima-ai/ai-tetsugaku` を import
+3. project 設定:
+   - **Root Directory: `site/`** ← 最重要（リポジトリ root ではなく site/ を指定）
+   - Framework Preset: **Astro**（自動検出されるはず）
+   - Build / Output: `site/vercel.json` が `buildCommand: pnpm test && pnpm build` / `outputDirectory: dist` を持つので **dashboard では空欄のままで良い**（vercel.json が優先）
+   - Production Branch: `master`
+4. Deploy を実行
 
-#### 2.2 GitHub Secrets を 2 つ設定
+> GitHub Secrets の設定は **不要**（Git 連携は Vercel 側で完結。token を GitHub に置かない、DONT §3.1）。
 
-GitHub: https://github.com/samejima-ai/ai-tetsugaku/settings/secrets/actions
+#### 2.2 解析を入れない（ガードレール）
 
-| Name | 取得元 |
-|---|---|
-| `CLOUDFLARE_API_TOKEN` | Cloudflare > My Profile > **API Tokens** > Create Token > template `Cloudflare Workers` (または最小権限: `Account.Cloudflare Pages: Edit`) |
-| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare > Workers & Pages 画面の右サイドに表示される **Account ID** |
+Vercel dashboard の **Web Analytics / Speed Insights は有効化しない**（script 注入になり DONT §1.3 違反）。
 
-#### 2.3 Deploy workflow の gate を外す
+#### 2.3 初回 deploy 確認
 
-`.github/workflows/deploy-site.yml` の deploy step を編集:
+import 時に初回 deploy が走る。以後は **`master` push で本番・PR で preview** が自動生成される。
+build は `pnpm test && pnpm build`（mask ゲート同梱）で走り、未マスク dialogues があれば deploy が落ちる (DONT §2.1)。
 
-```yaml
-- name: Deploy to Cloudflare Pages (gated)
-  if: ${{ false }}   # ← この 1 行を削除する
-  uses: cloudflare/wrangler-action@v3
-  ...
-```
-
-削除した commit を master に push (Phase 0 のみ master 直 push 可、DONT §3.2)。
-
-#### 2.4 初回 deploy 確認
-
-master push をトリガーに workflow が走る (Actions タブで進行確認)。
-build + test + deploy が green になり、Cloudflare Pages にアーティファクトがアップロードされる。
-
-成功したら CF dashboard の Pages project に deployment URL が表示される (`https://ai-tetsugaku-suru.pages.dev` 系)。
+成功したら Vercel dashboard に deployment URL が表示される (`https://ai-tetsugaku-suru.vercel.app` 系)。
 
 ### 3. 実コンテンツ投入
 
@@ -172,9 +158,9 @@ build + test + deploy が green になり、Cloudflare Pages にアーティフ�
 
 ### 4. Production URL の確定と反映
 
-1. CF Pages の URL が確定したら (例: `https://ai-tetsugaku-suru.pages.dev` または独自ドメイン)
+1. Vercel の URL が確定したら (例: `https://ai-tetsugaku-suru.vercel.app` または独自ドメイン)
 2. 以下を実 URL に更新:
-   - `site/astro.config.mjs` の `site:` フィールド (現状 `https://ai-tetsugaku-suru.example.com` placeholder)
+   - `site/astro.config.mjs` の `site:` フィールド (現状 `https://ai-tetsugaku-suru.vercel.app` 暫定値)
    - `dh-upgrades/ai-tetsugaku-suru/SPEC.md` §5.1 の production 行
 3. 更新を 1 commit にまとめて master push
 

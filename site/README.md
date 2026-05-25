@@ -1,6 +1,6 @@
 # ai--tetsugaku-suru — site (Phase 0)
 
-Master (かげろう) の哲学発信サイト。Astro + Tailwind の静的サイト。
+Master (かげろう) の思考遊技場（過程が本体・結晶は区切り）。Astro + Tailwind の静的サイト。
 
 仕様は `/dh-upgrades/ai-tetsugaku-suru/` 配下を参照:
 
@@ -46,6 +46,10 @@ Master が実コンテンツを入れた時点で `draft: false` にする。
 
 ## デプロイ
 
-`.github/workflows/deploy-site.yml` は Cloudflare Pages 用の雛形を含むが、
-`CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` が GitHub Secrets に設定されるまで
-deploy step は gated (no-op)。Master が secret を設定して `if: ${{ false }}` を外すと有効化。
+**Vercel（Git 連携）** でデプロイする。Vercel dashboard で repo を import し、
+**Root Directory = `site/`** を指定すれば、`master` push で本番・PR で preview が自動生成される。
+build は `site/vercel.json`（`buildCommand: pnpm test && pnpm build`）で mask ゲートごと走るため、
+未マスク dialogues があれば deploy も落ちる。GitHub Secrets は不要。
+詳細手順は `/dh-upgrades/ai-tetsugaku-suru/MANUAL.md §2`。
+
+`.github/workflows/site-ci.yml` は GitHub 側の build + mask test ゲート（deploy はしない）。

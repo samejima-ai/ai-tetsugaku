@@ -5,23 +5,20 @@ import { SITE_NAME_DISPLAY, AUTHOR_DISPLAY } from '~/lib/constants';
 <BaseLayout title="about">
   <h1 class="font-mincho text-2xl mb-6">about</h1>
 
-  <h2 class="font-mincho text-lg mt-8 mb-4">{AUTHOR_DISPLAY}</h2>
   <p class="text-base mb-4">
-    {AUTHOR_DISPLAY} は本サイト ({SITE_NAME_DISPLAY}) の著者。
-    AI と人間の対話を介して哲学することについて、自分の文章と Ignis との対話の二経路で記録します。
+    考えることそれ自体を目的とする場。{AUTHOR_DISPLAY} と Ignis（AI）の対話を
+    <strong class="font-normal">過程</strong>として流し、考えがまとまった節目に
+    <strong class="font-normal">結晶</strong>を残します。過程が本体で、結晶はその区切りです。
   </p>
 
-  <h2 class="font-mincho text-lg mt-8 mb-4">サイト名 — <code class="font-mono">ai--tetsugaku-suru</code></h2>
   <p class="text-base mb-4">
-    「AI〇哲学する」の <code class="font-mono">〇</code> を二重ハイフン <code class="font-mono">--</code> で表象しました。
-    <code class="font-mono">AI</code> と <code class="font-mono">tetsugaku-suru</code> の間にある <code class="font-mono">--</code> は、
-    両者を結びつけない / 切断しない / 関係子そのものを「余白」として現前させる装置です。
+    サイト名 <code class="font-mono">{SITE_NAME_DISPLAY}</code> の <code class="font-mono">--</code> は、
+    「AI〇哲学する」の <code class="font-mono">〇</code>。語と語のあいだに置かれた「余白」です。
   </p>
 
-  <h2 class="font-mincho text-lg mt-8 mb-4">Ignis</h2>
+  <h2 class="font-mincho text-lg mt-8 mb-4">{AUTHOR_DISPLAY} / Ignis</h2>
   <p class="text-base mb-4">
-    Ignis は dialog-harness の persona の一つ。本サイトに登場する Ignis は、{AUTHOR_DISPLAY} との対話のなかで応答する存在として現れます。
-    青い毛先と、思考の踏ん張りを持つ AI。
+    {AUTHOR_DISPLAY} は本サイトの著者。Ignis は対話の相手として現れる AI（dialog-harness の persona）です。
   </p>
 
   <h2 class="font-mincho text-lg mt-8 mb-4">関連</h2>

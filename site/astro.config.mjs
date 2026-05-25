@@ -4,5 +4,5 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   integrations: [mdx(), tailwind({ applyBaseStyles: false })],
-  site: 'https://ai-tetsugaku-suru.example.com',
+  site: 'https://ai-tetsugaku-suru.vercel.app',
 });
