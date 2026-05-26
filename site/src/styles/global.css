@@ -124,6 +124,9 @@
    非対称角丸・書体差（明朝↔角ゴシック↔等幅）だけで行う。
    分類クラス（dq-*）は rehype-dialogue-voices.mjs が付与する。
    ───────────────────────────────────────────────────────────── */
+.prose-article {
+  overflow-wrap: break-word; /* 長いURL・英字列が画面外へはみ出さない */
+}
 .prose-article p {
   margin-bottom: 1.5rem;
   line-height: 1.85;
@@ -131,13 +134,13 @@
 .prose-article h2 {
   margin-top: 2.75rem;
   margin-bottom: 1rem;
-  font-size: 1.728rem;
+  font-size: clamp(1.45rem, 1.2rem + 1.4vw, 1.728rem);
   line-height: 1.4;
 }
 .prose-article h3 {
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-  font-size: 1.44rem;
+  font-size: clamp(1.28rem, 1.1rem + 1vw, 1.44rem);
   line-height: 1.4;
 }
 .prose-article code {
@@ -267,11 +270,18 @@
   margin-bottom: 0.5rem;
 }
 
-/* 転回点マップなどの表 — 細罫線で静かに */
+/* 転回点マップなどの表 — 細罫線で静かに。中間幅では横スクロール、
+   スマホ幅（≤680px）では各行を縦積みカードに組み替える（mobile-first）。 */
+.prose-article .table-scroll {
+  margin: 1.9rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 .prose-article table {
   width: 100%;
+  min-width: 32rem;
   border-collapse: collapse;
-  margin: 1.9rem 0;
+  margin: 0;
   font-size: 0.85rem;
   font-family: 'Noto Sans JP', Inter, system-ui, sans-serif;
   line-height: 1.6;
@@ -291,3 +301,48 @@
   vertical-align: top;
 }
 .prose-article tbody tr:nth-child(even) td { background: var(--dq-zebra); }
+
+@media (max-width: 680px) {
+  /* 表 → 縦積みカード。ヘッダは隠し、各セルは「見出し: 値」の2段グリッドに */
+  .prose-article .table-scroll { overflow-x: visible; }
+  .prose-article table { min-width: 0; }
+  .prose-article thead {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0; border: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  .prose-article tbody tr {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 12px 0 12px 0;
+    background: var(--dq-recessed-bg);
+    padding: 0.55rem 0.9rem;
+    margin-bottom: 0.85rem;
+  }
+  .prose-article tbody td {
+    display: block;
+    border: 0;
+    padding: 0.3rem 0 0.5rem;
+    background: transparent;
+  }
+  .prose-article tbody tr:nth-child(even) td { background: transparent; }
+  /* 小見出し（列名）を値の上に小さく置く */
+  .prose-article tbody td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--fg);
+    opacity: 0.65;
+    margin-bottom: 0.15rem;
+    line-height: 1.5;
+  }
+  .prose-article tbody td:first-child {
+    font-weight: 600;
+    color: var(--fg);
+  }
+  /* スマホでは ASCII 図をさらに小さく（横スクロール量を減らす） */
+  .prose-article pre code { font-size: 0.72em; }
+}

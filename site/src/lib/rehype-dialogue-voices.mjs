@@ -50,6 +50,12 @@ function leadingStrong(node) {
   return isElement(first, 'strong') ? first : null;
 }
 
+function findChild(node, tagName) {
+  if (!node || !node.children) return null;
+  for (const c of node.children) if (isElement(c, tagName)) return c;
+  return null;
+}
+
 function matchSpeaker(text) {
   const t = (text || '').trim();
   for (const name in SPEAKERS) if (t.startsWith(name)) return SPEAKERS[name];
@@ -81,6 +87,41 @@ function classifyBlockquote(bq) {
   }
 
   addClass(bq, 'dq-plain');
+}
+
+// 各 <td> にヘッダ見出しを data-label として写し、狭幅では縦積みカード化できるようにする。
+function decorateTable(table) {
+  const thead = findChild(table, 'thead');
+  const headRow = thead ? findChild(thead, 'tr') : null;
+  const labels = [];
+  if (headRow) {
+    for (const th of headRow.children) if (isElement(th)) labels.push(getText(th).trim());
+  }
+  const tbody = findChild(table, 'tbody');
+  if (!tbody) return;
+  for (const tr of tbody.children) {
+    if (!isElement(tr, 'tr')) continue;
+    let ci = 0;
+    for (const td of tr.children) {
+      if (!isElement(td)) continue;
+      const label = labels[ci];
+      if (label) {
+        if (!td.properties) td.properties = {};
+        td.properties.dataLabel = label;
+      }
+      ci++;
+    }
+  }
+}
+
+// 横スクロール用の wrapper で表を包む。
+function wrapTable(table) {
+  return {
+    type: 'element',
+    tagName: 'div',
+    properties: { className: ['table-scroll'] },
+    children: [table],
+  };
 }
 
 function walk(node) {
@@ -116,6 +157,9 @@ function walk(node) {
       }
     } else if (c.tagName === 'blockquote' && !c.__dqClassified) {
       classifyBlockquote(c);
+    } else if (c.tagName === 'table') {
+      decorateTable(c);
+      kids[i] = wrapTable(c);
     }
 
     walk(c);

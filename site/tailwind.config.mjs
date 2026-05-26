@@ -16,8 +16,9 @@ export default {
         'md': ['1.2rem', { lineHeight: '1.5' }],
         'lg': ['1.44rem', { lineHeight: '1.4' }],
         'xl': ['1.728rem', { lineHeight: '1.4' }],
-        '2xl': ['2.074rem', { lineHeight: '1.3' }],
-        '3xl': ['2.488rem', { lineHeight: '1.2' }],
+        // 大見出しはスマホで縮みPCで伸びる流体サイズ（clamp）
+        '2xl': ['clamp(1.6rem, 1.2rem + 1.9vw, 2.074rem)', { lineHeight: '1.3' }],
+        '3xl': ['clamp(1.85rem, 1.3rem + 2.6vw, 2.488rem)', { lineHeight: '1.2' }],
       },
     },
   },
