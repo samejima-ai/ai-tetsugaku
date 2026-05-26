@@ -4,13 +4,14 @@ import ArticleCard from '~/components/ArticleCard.astro';
 import DialogueEntry from '~/components/DialogueEntry.astro';
 import { getCollection } from 'astro:content';
 import { SITE_NAME_DISPLAY, SITE_TAGLINE } from '~/lib/constants';
+import { isPublic } from '~/lib/visibility';
 
 // 過程 = サイトの本体。対話ストリームを新しい順に。
-const stream = (await getCollection('dialogues', ({ data }) => !data.draft))
+const stream = (await getCollection('dialogues', ({ data }) => isPublic(data)))
   .sort((a, b) => b.data.recordedAt.localeCompare(a.data.recordedAt));
 
 // 結晶 = 過程の区切り（飛び石）。低頻度。
-const crystals = (await getCollection('philosophy', ({ data }) => !data.draft))
+const crystals = (await getCollection('philosophy', ({ data }) => isPublic(data)))
   .sort((a, b) => b.data.publishedAt.localeCompare(a.data.publishedAt));
 ---
 <BaseLayout>

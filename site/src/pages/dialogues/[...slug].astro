@@ -2,9 +2,10 @@
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { PARTICIPANT_DISPLAY, FORMAT_LABELS } from '~/lib/constants';
+import { isPublic } from '~/lib/visibility';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('dialogues', ({ data }) => !data.draft);
+  const entries = await getCollection('dialogues', ({ data }) => isPublic(data));
   return entries.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },

@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { isPublic } from '~/lib/visibility';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('philosophy', ({ data }) => !data.draft);
+  const entries = await getCollection('philosophy', ({ data }) => isPublic(data));
   return entries.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
