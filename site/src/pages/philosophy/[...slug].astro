@@ -34,37 +34,3 @@ const { title, description, publishedAt, tags } = entry.data;
     <Content />
   </article>
 </BaseLayout>
-
-<style>
-  .prose-article :global(p) {
-    margin-bottom: 1.5rem;
-    line-height: 1.85;
-  }
-  .prose-article :global(h2) {
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    font-family: 'Shippori Mincho', 'Noto Serif JP', Georgia, serif;
-    font-size: 1.728rem;
-    line-height: 1.4;
-  }
-  .prose-article :global(h3) {
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
-    font-family: 'Shippori Mincho', 'Noto Serif JP', Georgia, serif;
-    font-size: 1.44rem;
-    line-height: 1.4;
-  }
-  .prose-article :global(blockquote) {
-    border-left: 2px solid var(--border);
-    padding-left: 1rem;
-    margin: 1.5rem 0;
-    color: var(--muted);
-  }
-  .prose-article :global(code) {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    background-color: var(--ignis-tint);
-    padding: 0.1rem 0.3rem;
-    border-radius: 4px;
-    font-size: 0.9em;
-  }
-</style>
