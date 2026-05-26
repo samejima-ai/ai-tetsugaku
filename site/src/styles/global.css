@@ -12,6 +12,12 @@
     --border: #e0e0d8;
     --ignis-tint: #c5d4e8;
     --shadow-card-hover: 0 2px 8px rgba(26, 26, 26, 0.06);
+    /* 色無き彩り: 地より「明」く浮く面 / 「暗」く沈む面（grayscale のみ） */
+    --dq-raised-bg: #ffffff;
+    --dq-raised-shadow: 0 1px 2px rgba(26, 26, 26, 0.05), 0 2px 6px rgba(26, 26, 26, 0.04);
+    --dq-recessed-bg: #f1f1ec;
+    --dq-recessed-shadow: inset 0 1px 2px rgba(26, 26, 26, 0.05);
+    --dq-zebra: rgba(26, 26, 26, 0.022);
   }
 
   @media (prefers-color-scheme: dark) {
@@ -24,6 +30,11 @@
       --border: #2a2c34;
       --ignis-tint: #1f2a3a;
       --shadow-card-hover: 0 2px 8px rgba(0, 0, 0, 0.4);
+      --dq-raised-bg: #1c1e26;
+      --dq-raised-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
+      --dq-recessed-bg: #0e0f14;
+      --dq-recessed-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+      --dq-zebra: rgba(255, 255, 255, 0.022);
     }
   }
 
@@ -105,4 +116,233 @@
     transition-duration: 0ms !important;
     animation-duration: 0ms !important;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Article prose — dialogues / philosophy
+   声の塗り分けは色を使わず、明暗（浮く面/沈む面）・やわらかい影・
+   非対称角丸・書体差（明朝↔角ゴシック↔等幅）だけで行う。
+   分類クラス（dq-*）は rehype-dialogue-voices.mjs が付与する。
+   ───────────────────────────────────────────────────────────── */
+.prose-article {
+  overflow-wrap: break-word; /* 長いURL・英字列が画面外へはみ出さない */
+}
+.prose-article p {
+  margin-bottom: 1.5rem;
+  line-height: 1.85;
+}
+.prose-article h2 {
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+  font-size: clamp(1.45rem, 1.2rem + 1.4vw, 1.728rem);
+  line-height: 1.4;
+}
+.prose-article h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.28rem, 1.1rem + 1vw, 1.44rem);
+  line-height: 1.4;
+}
+.prose-article code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  background-color: var(--ignis-tint);
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* 収束の ASCII 図など — 沈める等幅パネル */
+.prose-article pre {
+  background: var(--dq-recessed-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px 0 12px 0;
+  box-shadow: var(--dq-recessed-shadow);
+  padding: 1.05rem 1.3rem;
+  margin: 1.9rem 0;
+  overflow-x: auto;
+  line-height: 1.7;
+}
+.prose-article pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.82em;
+}
+
+/* 既定の引用（話者でも注釈でもない） */
+.prose-article blockquote { margin: 1.5rem 0; }
+.prose-article .dq-plain {
+  border-left: 2px solid var(--border);
+  padding: 0.3rem 0 0.3rem 1rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+/* ── かげろう の発言＝「明」：わずかに浮くカード・明朝 ── */
+.prose-article .dq-say {
+  background: var(--dq-raised-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px 0 14px 0;
+  box-shadow: var(--dq-raised-shadow);
+  padding: 1.1rem 1.3rem;
+  margin: 0.45rem 0 1.9rem;
+  font-family: 'Shippori Mincho', 'Noto Serif JP', Georgia, serif;
+  line-height: 1.95;
+}
+.prose-article .dq-say p { margin-bottom: 1rem; }
+.prose-article .dq-say > :last-child { margin-bottom: 0; }
+/* 型B（引用内ラベル）の話者タグは行頭チップとして */
+.prose-article .dq-say .dq-say__tag { margin-right: 0.6rem; }
+
+/* 発言の肩につく話者ラベル（型A：直前の段落） */
+.prose-article .dq-say__label {
+  margin: 1.9rem 0 0;
+  font-family: 'Noto Sans JP', Inter, system-ui, sans-serif;
+  font-size: 0.694rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.prose-article .dq-say__tag {
+  font-family: 'Noto Sans JP', Inter, system-ui, sans-serif;
+  font-size: 0.694rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+/* インライン発言（引用が同段落内） */
+.prose-article .dq-say-inline {
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--border);
+  font-family: 'Shippori Mincho', 'Noto Serif JP', Georgia, serif;
+  line-height: 1.9;
+}
+
+/* ── 解説フェーズ（ignis の応答）＝「暗」：沈むインセット面・角ゴシック ── */
+.prose-article .dq-note {
+  background: var(--dq-recessed-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px 0 12px 0;
+  box-shadow: var(--dq-recessed-shadow);
+  padding: 1.05rem 1.3rem;
+  margin: 1.6rem 0;
+  font-family: 'Noto Sans JP', Inter, system-ui, sans-serif;
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.85;
+}
+.prose-article .dq-note p { margin-bottom: 0.9rem; }
+.prose-article .dq-note > :last-child { margin-bottom: 0; }
+.prose-article .dq-note ul { margin: 0.4rem 0 0.9rem; padding-left: 1.2rem; }
+.prose-article .dq-note li { margin-bottom: 0.3rem; }
+.prose-article .dq-note__label {
+  display: block;
+  font-size: 0.694rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--fg);
+  margin-bottom: 0.5rem;
+}
+
+/* ── 枠組みノート（位置づけ／留保／中心命題）：塗りなしの囲み ── */
+.prose-article .dq-callout {
+  border: 1px solid var(--border);
+  border-radius: 12px 0 12px 0;
+  background: transparent;
+  padding: 1.1rem 1.3rem;
+  margin: 1.9rem 0;
+  font-family: 'Noto Sans JP', Inter, system-ui, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.85;
+}
+.prose-article .dq-callout p { margin-bottom: 0.8rem; }
+.prose-article .dq-callout > :last-child { margin-bottom: 0; }
+.prose-article .dq-callout ul { margin: 0.4rem 0 0.8rem; padding-left: 1.2rem; }
+.prose-article .dq-callout li { margin-bottom: 0.3rem; }
+.prose-article .dq-callout__label {
+  display: block;
+  font-size: 0.694rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--fg);
+  margin-bottom: 0.5rem;
+}
+
+/* 転回点マップなどの表 — 細罫線で静かに。中間幅では横スクロール、
+   スマホ幅（≤680px）では各行を縦積みカードに組み替える（mobile-first）。 */
+.prose-article .table-scroll {
+  margin: 1.9rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.prose-article table {
+  width: 100%;
+  min-width: 32rem;
+  border-collapse: collapse;
+  margin: 0;
+  font-size: 0.85rem;
+  font-family: 'Noto Sans JP', Inter, system-ui, sans-serif;
+  line-height: 1.6;
+}
+.prose-article thead th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--fg);
+  background: var(--dq-recessed-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0.7rem;
+}
+.prose-article tbody td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0.7rem;
+  color: var(--muted);
+  vertical-align: top;
+}
+.prose-article tbody tr:nth-child(even) td { background: var(--dq-zebra); }
+
+@media (max-width: 680px) {
+  /* 表 → 縦積みカード。ヘッダは隠し、各セルは「見出し: 値」の2段グリッドに */
+  .prose-article .table-scroll { overflow-x: visible; }
+  .prose-article table { min-width: 0; }
+  .prose-article thead {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0; border: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  .prose-article tbody tr {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 12px 0 12px 0;
+    background: var(--dq-recessed-bg);
+    padding: 0.55rem 0.9rem;
+    margin-bottom: 0.85rem;
+  }
+  .prose-article tbody td {
+    display: block;
+    border: 0;
+    padding: 0.3rem 0 0.5rem;
+    background: transparent;
+  }
+  .prose-article tbody tr:nth-child(even) td { background: transparent; }
+  /* 小見出し（列名）を値の上に小さく置く */
+  .prose-article tbody td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--fg);
+    opacity: 0.65;
+    margin-bottom: 0.15rem;
+    line-height: 1.5;
+  }
+  .prose-article tbody td:first-child {
+    font-weight: 600;
+    color: var(--fg);
+  }
+  /* スマホでは ASCII 図をさらに小さく（横スクロール量を減らす） */
+  .prose-article pre code { font-size: 0.72em; }
 }

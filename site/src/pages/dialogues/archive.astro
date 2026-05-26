@@ -2,8 +2,9 @@
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import DialogueEntry from '~/components/DialogueEntry.astro';
 import { getCollection } from 'astro:content';
+import { isPublic } from '~/lib/visibility';
 
-const dialogues = (await getCollection('dialogues', ({ data }) => !data.draft))
+const dialogues = (await getCollection('dialogues', ({ data }) => isPublic(data)))
   .sort((a, b) => b.data.recordedAt.localeCompare(a.data.recordedAt));
 ---
 <BaseLayout title="dialogues archive">

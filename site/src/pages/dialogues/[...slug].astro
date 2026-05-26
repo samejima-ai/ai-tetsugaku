@@ -2,9 +2,10 @@
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { PARTICIPANT_DISPLAY, FORMAT_LABELS } from '~/lib/constants';
+import { isPublic } from '~/lib/visibility';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('dialogues', ({ data }) => !data.draft);
+  const entries = await getCollection('dialogues', ({ data }) => isPublic(data));
   return entries.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
@@ -40,24 +41,3 @@ const { title, recordedAt, publishedAt, participants, format } = entry.data;
     <Content />
   </article>
 </BaseLayout>
-
-<style>
-  .prose-article :global(p) {
-    margin-bottom: 1.5rem;
-    line-height: 1.85;
-  }
-  .prose-article :global(blockquote) {
-    border-left: 2px solid var(--border);
-    padding-left: 1rem;
-    margin: 1.5rem 0;
-    font-family: 'Shippori Mincho', 'Noto Serif JP', Georgia, serif;
-    line-height: 1.8;
-  }
-  .prose-article :global(code) {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    background-color: var(--ignis-tint);
-    padding: 0.1rem 0.3rem;
-    border-radius: 4px;
-    font-size: 0.9em;
-  }
-</style>
