@@ -1,0 +1,21 @@
+---
+interface Props {
+  variant: 'dialogue' | 'crystal';
+  href: string;
+  label: string;
+  title: string;
+  description: string;
+  meta?: string;
+}
+const { variant, href, label, title, description, meta } = Astro.props;
+const swatchClass = variant === 'dialogue' ? 'portal__swatch--dialogue' : 'portal__swatch--crystal';
+---
+<a class="portal corner-asym-lg" href={href} aria-label={`${label}：${title}`}>
+  <div class={`portal__swatch ${swatchClass}`} aria-hidden="true"></div>
+  <div class="portal__body">
+    <p class="portal__label">{label}</p>
+    <h2 class="portal__title">{title}</h2>
+    <p class="portal__desc">{description}</p>
+    {meta && <p class="portal__meta">{meta}</p>}
+  </div>
+</a>

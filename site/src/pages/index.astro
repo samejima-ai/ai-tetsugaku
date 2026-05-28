@@ -1,57 +1,42 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import ArticleCard from '~/components/ArticleCard.astro';
-import DialogueEntry from '~/components/DialogueEntry.astro';
+import PortalCard from '~/components/PortalCard.astro';
 import { getCollection } from 'astro:content';
 import { SITE_NAME_DISPLAY, SITE_TAGLINE } from '~/lib/constants';
 import { isPublic } from '~/lib/visibility';
 
-// 過程 = サイトの本体。対話ストリームを新しい順に。
-const stream = (await getCollection('dialogues', ({ data }) => isPublic(data)))
-  .sort((a, b) => b.data.recordedAt.localeCompare(a.data.recordedAt));
-
-// 結晶 = 過程の区切り（飛び石）。低頻度。
-const crystals = (await getCollection('philosophy', ({ data }) => isPublic(data)))
-  .sort((a, b) => b.data.publishedAt.localeCompare(a.data.publishedAt));
+const dialogues = await getCollection('dialogues', ({ data }) => isPublic(data));
+const crystals = await getCollection('philosophy', ({ data }) => isPublic(data));
 ---
 <BaseLayout>
-  <section class="mb-16">
-    <h1 class="font-mincho text-3xl mb-4">{SITE_NAME_DISPLAY}</h1>
+  <section class="mb-12">
+    <h1 class="font-mincho text-3xl mb-3">{SITE_NAME_DISPLAY}</h1>
     <p class="text-base text-[var(--muted)]">{SITE_TAGLINE}</p>
-    <p class="text-sm text-[var(--muted)] mt-4 leading-relaxed">
-      考えることそれ自体を目的とする場。<strong class="font-normal text-[var(--fg)]">過程（思考の河）が本体</strong>で、
-      結晶はその流れに打たれる飛び石にすぎない。
-    </p>
   </section>
 
-  <section class="mb-16">
-    <h2 class="text-sm text-[var(--muted)] uppercase tracking-widest mb-2">— 思考の河 —</h2>
-    <p class="text-sm text-[var(--muted)] mb-6">かげろう と Ignis の対話。流れそのもの。未完のまま流れ続けてよい。</p>
-    {stream.length === 0 ? (
-      <p class="text-base text-[var(--muted)]">まだ河は流れていない。最初の対話を待っている。</p>
-    ) : (
-      <div class="space-y-4">
-        {stream.map((entry) => <DialogueEntry entry={entry} />)}
-      </div>
-    )}
-  </section>
-
-  <section class="mb-16">
-    <h2 class="text-sm text-[var(--muted)] uppercase tracking-widest mb-2">— 結晶 —</h2>
-    <p class="text-sm text-[var(--muted)] mb-6">流れのなかで思考が節目に達したとき打たれる飛び石。低頻度。</p>
-    {crystals.length === 0 ? (
-      <p class="text-base text-[var(--muted)]">まだ飛び石は置かれていない。</p>
-    ) : (
-      <div class="space-y-4">
-        {crystals.map((entry) => <ArticleCard entry={entry} />)}
-      </div>
-    )}
+  <section class="grid gap-5 mb-12">
+    <PortalCard
+      variant="dialogue"
+      href="/dialogues/"
+      label="対話篇 — dialogues"
+      title="思考の河"
+      description="かげろう と Ignis の対話。流れそのもの。縦に降りる時系列で読む。"
+      meta={`${dialogues.length} 篇`}
+    />
+    <PortalCard
+      variant="crystal"
+      href="/philosophy/"
+      label="結晶篇 — philosophy"
+      title="飛び石"
+      description="流れのなかで思考が節目に達したとき打たれる結晶。テーマで配置。"
+      meta={`${crystals.length} 篇`}
+    />
   </section>
 
   <section>
-    <h2 class="text-sm text-[var(--muted)] uppercase tracking-widest mb-6">— about —</h2>
-    <p class="text-base">
-      <a href="/about/">この場と、かげろう について</a>。
+    <p class="text-sm text-[var(--muted)]">
+      この場と かげろう について →{' '}
+      <a href="/about/">about</a>
     </p>
   </section>
 </BaseLayout>
