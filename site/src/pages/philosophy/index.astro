@@ -1,19 +1,52 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import ArticleCard from '~/components/ArticleCard.astro';
-import { getCollection } from 'astro:content';
+import CrystalCard from '~/components/CrystalCard.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import { isPublic } from '~/lib/visibility';
 
 const philosophy = (await getCollection('philosophy', ({ data }) => isPublic(data)))
   .sort((a, b) => b.data.publishedAt.localeCompare(a.data.publishedAt));
+
+// 主タグ（最初のタグ）でセクション分け。タグ無しは「未分類」。
+type Entry = CollectionEntry<'philosophy'>;
+const grouped = new Map<string, Entry[]>();
+for (const entry of philosophy) {
+  const key = entry.data.tags?.[0] ?? '未分類';
+  if (!grouped.has(key)) grouped.set(key, []);
+  grouped.get(key)!.push(entry);
+}
+// 件数の多い順、同数ならキー名で安定化
+const sections = Array.from(grouped.entries()).sort(([ak, av], [bk, bv]) => {
+  if (bv.length !== av.length) return bv.length - av.length;
+  return ak.localeCompare(bk);
+});
 ---
-<BaseLayout title="philosophy">
-  <h1 class="font-mincho text-2xl mb-6">philosophy</h1>
-  {philosophy.length === 0 ? (
-    <p class="text-base text-[var(--muted)]">まだ公開された記事はありません。</p>
-  ) : (
-    <div class="space-y-4">
-      {philosophy.map((entry) => <ArticleCard entry={entry} />)}
-    </div>
-  )}
+<BaseLayout title="結晶篇" description="思考が節目に達したとき打たれる結晶。テーマで配置。">
+  <div class="bg-crystal">
+    <header class="mb-10">
+      <p class="text-xs text-[var(--muted)] uppercase tracking-[0.16em] mb-2">結晶篇 — philosophy</p>
+      <h1 class="font-mincho text-3xl mb-3">飛び石</h1>
+      <p class="text-sm text-[var(--muted)] leading-relaxed">
+        流れのなかで思考が節目に達したとき打たれる結晶。各カードをクリックすると要約が開き、本文は「全文を読む →」で別ページへ。
+      </p>
+    </header>
+
+    {philosophy.length === 0 ? (
+      <p class="text-base text-[var(--muted)]">まだ飛び石は置かれていない。</p>
+    ) : (
+      sections.map(([sectionKey, entries]) => (
+        <section class="crystal-section">
+          <h2 class="crystal-section__heading">
+            {sectionKey === '未分類' ? '未分類' : `# ${sectionKey}`}
+            <span class="ml-2 normal-case tracking-normal opacity-70">— {entries.length} 篇</span>
+          </h2>
+          {entries.map((entry) => <CrystalCard entry={entry} />)}
+        </section>
+      ))
+    )}
+
+    <nav class="text-sm text-[var(--muted)] mt-12">
+      <a href="/">← home</a>
+    </nav>
+  </div>
 </BaseLayout>

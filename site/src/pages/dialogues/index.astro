@@ -1,0 +1,35 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import TimelineEntry from '~/components/TimelineEntry.astro';
+import { getCollection } from 'astro:content';
+import { isPublic } from '~/lib/visibility';
+
+const dialogues = (await getCollection('dialogues', ({ data }) => isPublic(data)))
+  .sort((a, b) => b.data.recordedAt.localeCompare(a.data.recordedAt));
+---
+<BaseLayout title="対話篇" description="かげろう と Ignis の対話。流れそのもの。">
+  <div class="bg-dialogue">
+    <header class="mb-10">
+      <p class="text-xs text-[var(--muted)] uppercase tracking-[0.16em] mb-2">対話篇 — dialogues</p>
+      <h1 class="font-mincho text-3xl mb-3">思考の河</h1>
+      <p class="text-sm text-[var(--muted)] leading-relaxed">
+        かげろう と Ignis の対話。新しいものが上、古いものが下。
+        節目に達した対話（<span class="inline-block w-2 h-2 align-middle rounded-full bg-[var(--ignis-tint)] border border-[var(--primary)]"></span> マーカー）から結晶が打たれる。
+      </p>
+    </header>
+
+    {dialogues.length === 0 ? (
+      <p class="text-base text-[var(--muted)]">まだ河は流れていない。最初の対話を待っている。</p>
+    ) : (
+      <ol class="timeline">
+        {dialogues.map((entry) => <TimelineEntry entry={entry} />)}
+      </ol>
+    )}
+
+    <nav class="text-sm text-[var(--muted)] mt-12">
+      <a href="/">← home</a>
+      <span class="mx-2">·</span>
+      <a href="/dialogues/archive/">単純な一覧（archive）</a>
+    </nav>
+  </div>
+</BaseLayout>

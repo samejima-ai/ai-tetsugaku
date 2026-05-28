@@ -1,0 +1,23 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props {
+  entry: CollectionEntry<'philosophy'>;
+}
+const { entry } = Astro.props;
+const { title, description, publishedAt, tags } = entry.data;
+---
+<details class="crystal-card corner-asym-lg">
+  <summary>
+    <h3 class="crystal-card__title">{title}</h3>
+    <time class="crystal-card__date" datetime={publishedAt}>{publishedAt}</time>
+  </summary>
+  <div class="crystal-card__body">
+    <p class="crystal-card__desc">{description}</p>
+    {tags && tags.length > 0 && (
+      <div class="crystal-card__tags">
+        {tags.map((t) => <span class="crystal-card__tag">#{t}</span>)}
+      </div>
+    )}
+    <a class="crystal-card__more" href={`/philosophy/${entry.slug}/`}>全文を読む →</a>
+  </div>
+</details>

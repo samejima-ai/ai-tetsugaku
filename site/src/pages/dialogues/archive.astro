@@ -10,7 +10,7 @@ const dialogues = (await getCollection('dialogues', ({ data }) => isPublic(data)
 <BaseLayout title="dialogues archive">
   <h1 class="font-mincho text-2xl mb-6">dialogues archive</h1>
   <p class="text-sm text-[var(--muted)] mb-8">
-    Phase 0 では dialogues は本 archive ページにのみリストされます。Phase 1+ で独立した dialogues トップが追加されます。
+    全対話の単純な一覧。流れを縦に追うなら <a href="/dialogues/">対話篇（思考の河）</a> から。
   </p>
   {dialogues.length === 0 ? (
     <p class="text-base text-[var(--muted)]">まだ公開された対話はありません。</p>
