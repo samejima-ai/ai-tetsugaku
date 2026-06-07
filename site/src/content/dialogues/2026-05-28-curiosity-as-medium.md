@@ -7,7 +7,7 @@ format: raw
 related: ["2026-05-28-curiosity-as-medium-thesis"]
 state: punctuated
 masked: true
-draft: true
+draft: false
 ---
 
 > **この記事の位置づけ**
